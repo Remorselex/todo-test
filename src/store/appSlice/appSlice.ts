@@ -5,19 +5,18 @@ import { persistReducer } from 'redux-persist';
 import { RootState } from '../store';
 
 interface AppState {
-  postQuery: null | undefined | string,
-  posts: null | undefined | string[],
+  postQuery: undefined | string,
+  posts: string[],
 }
 
 const initialState: AppState = {
-  postQuery: null,
+  postQuery: '',
   posts: [],
 }
 
 const persistConfig = {
   key: 'app',
   storage: storage,
-  whitelist: ['token'],
 };
 
 const appSlice = createSlice({
@@ -26,11 +25,23 @@ const appSlice = createSlice({
   reducers: {
     setQuery(state, action) {
       state.postQuery = action.payload
+    },
+    setPost(state, action) {
+      state.posts = [...state.posts, action.payload];
+    },
+    removePost(state, action) {
+      state.posts = state.posts.filter((item) => item !== action.payload)
     }
   }
 })
 
 const persistedAppSlice = persistReducer(persistConfig, appSlice.reducer);
+
+export const {
+  setQuery,
+  setPost,
+  removePost
+} = appSlice.actions;
 
 export const appSelector = (state: RootState) => state.app;
 

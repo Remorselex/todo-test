@@ -1,5 +1,5 @@
 export const centeredDiv: React.CSSProperties = {
   display: 'flex',
-  justifyContent: 'space-around',
+  justifyContent: 'center',
   alignItems: 'center',
 }

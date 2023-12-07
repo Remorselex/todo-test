@@ -1,19 +1,26 @@
 import React from 'react';
+
+import { Box } from '@mui/material';
+
 import InputComponent from './components/Input/Input';
 
 import { centeredDiv } from './StylesConstants/StylesConstants';
+import PostsComponent from './components/posts/Posts';
 
 function App() {
 
   const container = {
     ...centeredDiv,
-    height: '100dvh'
+    margin: '0 10rem',
+    flexDirection: 'column',
+    height: '100dvh',
   }
   
   return (
-    <div style={container}>
+    <Box sx={container}>
       <InputComponent />
-    </div>
+      <PostsComponent />
+    </Box>
   );
 }
 
