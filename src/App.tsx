@@ -6,6 +6,7 @@ import InputComponent from './components/Input/Input';
 
 import { centeredDiv } from './StylesConstants/StylesConstants';
 import PostsComponent from './components/posts/Posts';
+import MultipleSelectComponent from './components/select/Select';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
   
   return (
     <Box sx={container}>
+      <MultipleSelectComponent />
       <InputComponent />
       <PostsComponent />
     </Box>

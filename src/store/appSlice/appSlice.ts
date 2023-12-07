@@ -7,11 +7,13 @@ import { RootState } from '../store';
 interface AppState {
   postQuery: undefined | string,
   posts: string[],
+  tags: string[]
 }
 
 const initialState: AppState = {
   postQuery: '',
   posts: [],
+  tags: [],
 }
 
 const persistConfig = {
@@ -30,7 +32,23 @@ const appSlice = createSlice({
       state.posts = [...state.posts, action.payload];
     },
     removePost(state, action) {
-      state.posts = state.posts.filter((item) => item !== action.payload)
+      state.posts = state.posts.filter((_, index) => index !== action.payload)
+    },
+    editPost(state, action) {
+      const { index, editedPost } = action.payload;
+      state.posts[index] = editedPost;
+    },
+    addTag(state, action) {
+      const tagsToAdd = Array.isArray(action.payload) ? action.payload : [action.payload];
+      const uniqueTagsToAdd = tagsToAdd.filter(tag => !state.tags.includes(tag));
+      state.tags = [...state.tags, ...uniqueTagsToAdd];
+    },
+    removeTag(state, action) {
+      const tagsToRemove = Array.isArray(action.payload) ? action.payload : [action.payload];
+      state.tags = state.tags.filter((currentTag) => !tagsToRemove.includes(currentTag));
+    },
+    filterByTag(state, action) {
+
     }
   }
 })
@@ -40,7 +58,11 @@ const persistedAppSlice = persistReducer(persistConfig, appSlice.reducer);
 export const {
   setQuery,
   setPost,
-  removePost
+  removePost,
+  editPost,
+  addTag,
+  removeTag,
+  filterByTag
 } = appSlice.actions;
 
 export const appSelector = (state: RootState) => state.app;
