@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { appSelector } from '../../store/appSlice/appSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { appSelector, setFilters } from '../../store/appSlice/appSlice';
 import { centeredDiv } from '../../StylesConstants/StylesConstants';
 
 const MultipleSelectComponent = () => {
   const [selectedValues, setSelectedValues] = useState([]);
+
+  const dispatch = useDispatch();
 
   const { tags } = useSelector(appSelector);
 
@@ -13,11 +15,18 @@ const MultipleSelectComponent = () => {
     setSelectedValues(event.target.value);
   };
 
+  useEffect(() => {
+    const dispatchFilteredPosts = () => {
+      dispatch(setFilters(selectedValues));
+    }
+    dispatchFilteredPosts();
+  }, [dispatch, selectedValues])
+
   return (
     <div style={{ position: 'fixed', top: '0', left: '0', padding: '1rem' }}>
       <Box sx={centeredDiv}>
         <FormControl sx={{ minWidth: 120 }}>
-          <InputLabel id="multiple-select-label">Выберите значение</InputLabel>
+          <InputLabel id="multiple-select-label">choose tagse</InputLabel>
           <Select
             labelId="multiple-select-label"
             id="multiple-select"
@@ -36,7 +45,7 @@ const MultipleSelectComponent = () => {
             sx={{ maxWidth: 200, overflow: 'hidden' }}
           >
             {tags.map((item, index) => (
-              <MenuItem sx={{ color: 'blue' }} key={item + index} value={`${item + (index + 1)}`}>
+              <MenuItem sx={{ color: 'blue' }} key={item + index} value={`${item }`}>
                 {item}
               </MenuItem>
             ))}

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import {useSelector} from 'react-redux'
 
 import { Box, IconButton  } from '@mui/material';
-import { addTag, appSelector, editPost, removePost, removeTag } from '../../store/appSlice/appSlice';
+import { appSelector, editPost, removePost, removeTag } from '../../store/appSlice/appSlice';
 
 
 import {useDispatch} from 'react-redux';
@@ -19,7 +19,7 @@ import { checkPostOnTag } from '../../utils/functions/functions';
 const PostsComponent = () => {
   const [editedIndex, setEditedIndex] = useState<number>(-1);
   const [editedPost, setEditedPost] = useState<string>('');
-  const {posts, tags} = useSelector(appSelector);
+  const {posts, tags, filters} = useSelector(appSelector);
   
   const dispatch = useDispatch()
 
@@ -45,13 +45,6 @@ const PostsComponent = () => {
     return word.startsWith('#');
   };
 
-  
-
-
-  // useEffect(() => {
-  //   dispatch(addTag(checkPostsOnTag()));
-  // }, [dispatch, posts])
-
   const post = {
     ...centeredDiv,
     justifyContent: 'space-between',
@@ -62,6 +55,12 @@ const PostsComponent = () => {
     margin: '0.5rem',
     padding: '0.5rem'
   }
+
+  const filteredPosts = posts.filter((post) => {
+    const postWords = post.split(' ');
+    return filters.every((filter) => postWords.includes(filter));
+  });
+
   return (
     <>
         <Box>
@@ -72,7 +71,7 @@ const PostsComponent = () => {
             </span>
           ))}
         </Box>
-       {posts?.map((item, index) => {
+       {filteredPosts?.map((item, index) => {
           const words = item.split(' ');
           return (
           <Box key={item + index} sx={post}>

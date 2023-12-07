@@ -4,16 +4,19 @@ import { persistReducer } from 'redux-persist';
 
 import { RootState } from '../store';
 
+
 interface AppState {
   postQuery: undefined | string,
   posts: string[],
-  tags: string[]
+  tags: string[],
+  filters: string[],
 }
 
 const initialState: AppState = {
   postQuery: '',
   posts: [],
   tags: [],
+  filters: [],
 }
 
 const persistConfig = {
@@ -47,8 +50,12 @@ const appSlice = createSlice({
       const tagsToRemove = Array.isArray(action.payload) ? action.payload : [action.payload];
       state.tags = state.tags.filter((currentTag) => !tagsToRemove.includes(currentTag));
     },
-    filterByTag(state, action) {
+    setFilters(state, action) {
+      const comingFilters = action.payload as string[];
 
+      const uniqueFilters = [...new Set(comingFilters)];
+
+      state.filters = uniqueFilters;
     }
   }
 })
@@ -62,7 +69,7 @@ export const {
   editPost,
   addTag,
   removeTag,
-  filterByTag
+  setFilters
 } = appSlice.actions;
 
 export const appSelector = (state: RootState) => state.app;
