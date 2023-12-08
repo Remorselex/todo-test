@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {useSelector} from 'react-redux'
 
 import { Box, IconButton  } from '@mui/material';
-import { appSelector, editPost, removePost, removeTag } from '../../store/appSlice/appSlice';
+import { addTag, appSelector, editPost, removePost, removeTag } from '../../store/appSlice/appSlice';
 
 
 import {useDispatch} from 'react-redux';
@@ -44,6 +44,17 @@ const PostsComponent = () => {
   const isTag = (word: string) => {
     return word.startsWith('#');
   };
+
+
+
+  useEffect(() => {
+    const setAllTags = () => {
+      const tagsArr = checkPostOnTag(posts).join('').replace(/\s+/g, ' ').replace(/#/g, ' #').split(' ').filter((tag) => !!tag);
+      console.log(tagsArr)
+      dispatch(addTag(tagsArr));
+    }
+    setAllTags();
+  }, [dispatch, posts])
 
   const post = {
     ...centeredDiv,

@@ -43,8 +43,7 @@ const appSlice = createSlice({
     },
     addTag(state, action) {
       const tagsToAdd = Array.isArray(action.payload) ? action.payload : [action.payload];
-      const uniqueTagsToAdd = tagsToAdd.filter(tag => !state.tags.includes(tag));
-      state.tags = [...state.tags, ...uniqueTagsToAdd];
+      state.tags = [...new Set(tagsToAdd)];
     },
     removeTag(state, action) {
       const tagsToRemove = Array.isArray(action.payload) ? action.payload : [action.payload];
@@ -52,9 +51,7 @@ const appSlice = createSlice({
     },
     setFilters(state, action) {
       const comingFilters = action.payload as string[];
-
       const uniqueFilters = [...new Set(comingFilters)];
-
       state.filters = uniqueFilters;
     }
   }

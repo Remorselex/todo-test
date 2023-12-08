@@ -5,8 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { TextField, Button, Box } from "@mui/material";
 
 import { centeredDiv } from "../../StylesConstants/StylesConstants";
-import { addTag, appSelector, setPost, setQuery } from '../../store/appSlice/appSlice';
-import { checkPostOnTag } from '../../utils/functions/functions';
+import { appSelector, setPost, setQuery } from '../../store/appSlice/appSlice';
  
 const InputComponent = () => {
   const {postQuery} = useSelector(appSelector);
@@ -19,16 +18,10 @@ const InputComponent = () => {
     setInputValue(event.target.value);
   }
   
-  const checkInputOnTag = (value: String | undefined) => {
-    return value?.includes('#');
-  }
 
   const updatePosts = () => {
     if (inputValue) {
       dispatch(setPost(inputValue));
-      if(checkInputOnTag(inputValue)) {
-        dispatch(addTag(checkPostOnTag(inputValue.split(' '))));
-      }
       setInputValue('');
     }
   }
