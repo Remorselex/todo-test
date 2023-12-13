@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Box, SelectChangeEvent } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { appSelector, setFilters } from '../../store/appSlice/appSlice';
 import { centeredDiv } from '../../StylesConstants/StylesConstants';
@@ -11,7 +11,7 @@ const MultipleSelectComponent = () => {
 
   const { tags } = useSelector(appSelector);
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: SelectChangeEvent<never[]>) => {
     setSelectedValues(event.target.value);
   };
 
